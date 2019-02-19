@@ -18,7 +18,6 @@ public class MainServerThread implements Runnable{
 	private static MainServerThread obj;
 	private ServerSocket serverSocket;
 	private ActiveConnectionThread activeConnection;
-	private NewClientHandlerThread newClientHandlerThread;
 	private MessageThread messageThread;
 	private boolean started;
 	private int port;
@@ -36,8 +35,6 @@ public class MainServerThread implements Runnable{
 		obj.serverSocket = new ServerSocket(obj.port);
 		obj.activeConnection = new ActiveConnectionThread();
 		obj.messageThread = new MessageThread(obj.activeConnection);
-		obj.newClientHandlerThread =new NewClientHandlerThread(obj.activeConnection ,obj.messageThread);
-		
 		return obj;
 	}
 	
@@ -46,8 +43,6 @@ public class MainServerThread implements Runnable{
 		Thread ob = new Thread(obj);
 		ob.start();
 		System.out.println("Main Server Started...");
-		obj.newClientHandlerThread.startThread();
-		System.out.println("Client Handler Started...");
 		obj.messageThread.startThread();
 		System.out.println("Message Handler Started...");
 		started = true;
@@ -59,10 +54,12 @@ public class MainServerThread implements Runnable{
 			try {
 				Socket socket = serverSocket.accept();
 				ClientSocket client = new ClientSocket(socket);
-				newClientHandlerThread.put(client);
-				
+				ConnectionThread connectionThread = new ConnectionThread(client, messageThread , activeConnection);
+				connectionThread.startThread();
 				
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ParserConfigurationException e) {
 				e.printStackTrace();
 			}
 		}
