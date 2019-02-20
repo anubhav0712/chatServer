@@ -1,4 +1,4 @@
-package com.anubhav.chatServer.id;
+package com.anubhav.chatServer.helper;
 
 public class CorrelationIdGenerator {
 	public static long nextId = 0;

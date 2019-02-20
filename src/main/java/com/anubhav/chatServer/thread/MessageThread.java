@@ -10,7 +10,7 @@ import java.util.Queue;
 
 import com.anubhav.chatServer.domain.ClientSocket;
 import com.anubhav.chatServer.domain.Message;
-import com.anubhav.chatServer.id.CorrelationIdGenerator;
+import com.anubhav.chatServer.helper.CorrelationIdGenerator;
 import com.anubhav.chatServer.parser.XMLMessageCreator;
 
 public class MessageThread implements Runnable{
